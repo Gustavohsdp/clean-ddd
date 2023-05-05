@@ -7,9 +7,9 @@ export class Slug {
 
   /**
    * Receives a string and normalize it as a slug.
-   * 
+   *
    * Example: "An example title" => "an-example-title"
-   * 
+   *
    * @param text {string}
    */
 
@@ -24,6 +24,6 @@ export class Slug {
       .replace(/--+/g, '-')
       .replace(/-$/g, '')
 
-      return new Slug(slugText)
+    return new Slug(slugText)
   }
 }
