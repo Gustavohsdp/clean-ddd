@@ -1,22 +1,24 @@
+import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
 import { describe, expect, it } from 'vitest'
-import { Answer } from '../../enterprise/entities/answer'
-import { AnswerRepository } from '../repositories/answers-repository'
 import { AnswerQuestionUseCase } from './answer-question'
 
-const fakeAnswerRepository: AnswerRepository = {
-  create: async (answer: Answer) => {},
-}
+let inMemoryAnswersRepository: InMemoryAnswersRepository
+let sut: AnswerQuestionUseCase
 
-describe('answer question use case', () => {
-  it('should be able create an ansers', async () => {
-    const AnswerQuestion = new AnswerQuestionUseCase(fakeAnswerRepository)
+describe('Create Question', () => {
+  beforeEach(() => {
+    inMemoryAnswersRepository = new InMemoryAnswersRepository()
+    sut = new AnswerQuestionUseCase(inMemoryAnswersRepository)
+  })
 
-    const { content } = await AnswerQuestion.execute({
-      content: 'new response',
-      instructorId: '1',
+  it('should be able create an answer', async () => {
+    const { answer } = await sut.execute({
       questionId: '1',
+      instructorId: '1',
+      content: 'content answer',
     })
 
-    expect(content).toEqual('new response')
+    expect(answer.id).toBeTruthy()
+    expect(inMemoryAnswersRepository.items[0].id).toEqual(answer.id)
   })
 })
